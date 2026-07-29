@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Results</title>
+</head>
+
+<body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    h1 {
+        text-align: center;
+    }
+    .candidate {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+    }
+</style>
+<h1>Election Results</h1>
+
+{% for c in candidates %}
+    <div class="candidate">
+        <h2>{{ c["name"] }}</h2>
+        <p>Votes: {{ c["votes"] }}</p>
+    </div>
+{% endfor %}
+
+</body>
+</html>

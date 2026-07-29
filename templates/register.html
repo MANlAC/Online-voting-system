@@ -1,0 +1,86 @@
+<head>
+    <title>Online Voting System-Register</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <style>
+        #address {
+            padding: 10px;
+            font-style: italic;
+            font-size: 15px;
+            border-radius: 10px;
+            width: 450px;
+
+        }
+
+        #imgpart {
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 420px;
+            padding: 3px;
+
+        }
+
+        #dropbox1 {
+            border: 2px solid black;
+            border-radius: 10px;
+            width: 400px;
+            padding: 5px;
+
+
+        }
+
+        #role {
+            padding: 5px;
+            font-style: italic;
+            font-size: 15px;
+            width: 100px;
+            border-radius: 10px;
+        }
+    </style>
+    <div id="header">
+        <center>
+            <h1>Online Voting System </h1>
+        </center>
+    </div>
+    <hr>
+    <div id="body">
+        <center>
+
+        <form action="/register" method="post" enctype="multipart/form-data">
+            <h2>Registration</h2>
+            <input type="text" name="name" placeholder="Enter your name" required>
+            <input type="number" name="voter_id" placeholder="Enter voter_id" required><br><br>
+            <input type="password" name="password" placeholder="Enter password" required>
+            <input type="password" name="confirm_password" placeholder="Confirm password" required><br><br>
+            <input id="address" type="text" name="address" placeholder="Enter your address" required><br><br>
+
+            <div id="imgpart">
+                Upload image:
+                <input type="file" name="photo" required>
+
+            </div><br>
+
+
+
+            <div id="dropbox1">
+                Select your role:
+                <select id="role" name="role">
+                    <option value="Voter">Voter</option>
+                    <option value="Candidate">Candidate</option>
+                </select><br><br>
+            </div>
+            <br>
+
+            <button id="registerbutton" type="submit"> Register</button><br>
+            Already have an account?
+            <a href="/">Login Here</a>
+        </form>
+        </center>
+    </div>
+
+    <hr>
+
+
+</body>

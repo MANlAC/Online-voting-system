@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <title>Voting System</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <div id="header">
+        <center>
+            <h1>Online Voting System</h1>
+        </center>
+
+
+    </div>
+    <hr>
+
+    <div id="body">
+        <center>
+            <form action="/login" method="post">
+                <h2>Login</h2>
+                <input type="number" name="voterid" placeholder="Enter voter ID"><br><br>
+                <input type="password" name="password" placeholder="Enter your password"><br><br>
+                <select id="dropbox" name="role">
+                    <option value="Voter">Voter</option>
+                    <option value="Candidate">Candidate</option>
+                    <option value="Admin">Admin</option>
+                </select><br><br>
+
+
+                <button id="loginbutton">Login</button> <br><br>
+                New User? <a href="/register"> Register Here</a>
+            </form>
+        </center>
+    </div><br><br><br>
+    <hr>
+
+
+
+
+</body>
+<center>
+    Please do not share your personal information!!!<br>
+    Thankyou<br><br><br>
+
+    <div id="credit">
+        </div>
+</center>
+
+</html>

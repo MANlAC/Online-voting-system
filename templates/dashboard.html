@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Online Voting System</h1>
+    <a href="/logout"><button>Logout</button></a>
+</div>
+
+<div class="container">
+
+    <h2>Welcome to Voting Dashboard</h2>
+
+   {% for c in candidates %}
+     <div>
+        <h3>{{ c["name"] }}</h3>
+
+        <form action="/vote" method="POST">
+            <input type="hidden" name="candidate_id" value="{{ c['id'] }}">
+            <button type="submit">Vote</button>
+        </form>
+     </div>
+    {% endfor %}
+
+    {% if role == "Admin" %}
+    <div class="card">
+        <h3>Admin Panel</h3>
+        <a href="/admin"><button>Go to Admin Panel</button></a>
+    </div>
+    {% endif %}
+
+</div>
+<center>
+<div class="card">
+    <a href="/results">
+        <button>See Results</button>
+    </a>
+</div>
+</center>
+
+</body>
+</html>

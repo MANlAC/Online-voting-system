@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Admin Panel</h1>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <a href="/add_candidate"><button>Add Candidate</button></a>
+        <a href="/results"><button>View Results</button></a>
+        <a href="/dashboard"><button>Back</button></a>
+        <a href="/logout"><button>Logout</button></a>
+    </div>
+
+</div>
+
+</body>
+</html>
