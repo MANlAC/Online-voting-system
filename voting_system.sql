@@ -1,38 +1,25 @@
-DROP DATABASE IF EXISTS votingsystem;
-CREATE DATABASE votingsystem;
-USE votingsystem;
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    voter_id INT UNIQUE,
-    name VARCHAR(100),
-    password VARCHAR(255),
-    role VARCHAR(20)
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    voter_id INTEGER UNIQUE,
+    name TEXT,
+    password TEXT,
+    role TEXT,
+    has_voted INTEGER DEFAULT 0
 );
-INSERT INTO users (voter_id, name, password, role)
-VALUES (101, 'Test User', '1234', 'Voter');
 
-CREATE TABLE candidates (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    votes INT DEFAULT 0
+INSERT OR IGNORE INTO users (voter_id, name, password, role, has_voted)
+VALUES (101, 'Test User', '1234', 'Voter', 0);
+
+INSERT OR IGNORE INTO users (voter_id, name, password, role, has_voted)
+VALUES (999, 'Admin', 'admin123', 'Admin', 0);
+
+CREATE TABLE IF NOT EXISTS candidates (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    votes INTEGER DEFAULT 0
 );
-INSERT INTO candidates (name) VALUES 
-('DONALD TRUMP'),
-('VLADMIR PUTIN'),
-('BARACK OBAMA');
-SELECT 
-    *
-FROM
-    users;
 
-ALTER TABLE users ADD COLUMN has_voted INT DEFAULT 0;
-
-INSERT INTO users (voter_id, name, password, role)
-VALUES (999, 'Admin', 'admin123', 'Admin');
-
-
- 
- 
-
-
+INSERT OR IGNORE INTO candidates (name, votes) VALUES ('DONALD TRUMP', 0);
+INSERT OR IGNORE INTO candidates (name, votes) VALUES ('VLADMIR PUTIN', 0);
+INSERT OR IGNORE INTO candidates (name, votes) VALUES ('BARACK OBAMA', 0);
 
