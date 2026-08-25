@@ -1,47 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Online Voting System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
-<div class="header">
-    <h1>Online Voting System</h1>
-    <a href="/logout"><button>Logout</button></a>
-</div>
-
-<div class="container">
-
-    <h2>Welcome to Voting Dashboard</h2>
-
-   {% for c in candidates %}
-     <div>
-        <h3>{{ c["name"] }}</h3>
-
-        <form action="/vote" method="POST">
-            <input type="hidden" name="candidate_id" value="{{ c['id'] }}">
-            <button type="submit">Vote</button>
-        </form>
-     </div>
-    {% endfor %}
-
-    {% if role == "Admin" %}
-    <div class="card">
-        <h3>Admin Panel</h3>
-        <a href="/admin"><button>Go to Admin Panel</button></a>
+    <div class="header">
+        <h1>🗳️ Online Voting System</h1>
+        <div class="subtitle">Welcome, {{ user_name }}</div>
+        <a href="/logout" style="position:absolute; top:20px; right:24px;">
+            <button class="btn btn-outline" style="color:white; border-color:rgba(255,255,255,0.3); font-size:13px;">Logout</button>
+        </a>
     </div>
-    {% endif %}
 
-</div>
-<center>
-<div class="card">
-    <a href="/results">
-        <button>See Results</button>
-    </a>
-</div>
-</center>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
+        <h2 style="margin-bottom: 4px;">Cast Your Vote</h2>
+        <p style="color: #888; margin-top: 0;">Choose one candidate to support</p>
+
+        {% if has_voted %}
+        <div class="voted-badge">✓ You have already voted</div>
+        {% endif %}
+
+        <div class="candidates-grid">
+        {% for c in candidates %}
+            <div class="candidate-card">
+                {% if c["photo"] %}
+                <img src="{{ url_for('uploaded_file', filename=c['photo']) }}" alt="{{ c['name'] }}" class="candidate-photo">
+                {% else %}
+                <div class="candidate-photo placeholder-photo">{{ c["name"][0] }}</div>
+                {% endif %}
+                <h3>{{ c["name"] }}</h3>
+                {% if c["bio"] %}
+                <p class="candidate-bio">{{ c["bio"] }}</p>
+                {% endif %}
+                {% if not has_voted %}
+                <form action="/vote" method="POST">
+                    <input type="hidden" name="candidate_id" value="{{ c['id'] }}">
+                    <button type="submit" class="btn btn-vote">Vote for {{ c["name"].split()[-1] }}</button>
+                </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+
+        {% if role == "Admin" %}
+        <div class="card" style="text-align:center; margin-top:24px;">
+            <a href="/admin"><button class="btn btn-primary">⚙ Admin Panel</button></a>
+        </div>
+        {% endif %}
+
+        <div style="text-align:center; margin-top:16px;">
+            <a href="/results"><button class="btn btn-outline">View Results</button></a>
+        </div>
+    </div>
 </body>
 </html>

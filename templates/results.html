@@ -1,32 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Results — Online Voting System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .result-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            margin: 12px 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s;
+        }
+        .result-card:hover {
+            transform: translateX(4px);
+        }
+        .result-rank {
+            font-size: 28px;
+            font-weight: 800;
+            min-width: 40px;
+            text-align: center;
+        }
+        .result-rank.gold { color: #f5576c; }
+        .result-rank.silver { color: #4facfe; }
+        .result-rank.bronze { color: #43e97b; }
+        .result-rank.other { color: #ccc; }
+        .result-info { flex: 1; }
+        .result-info h3 { margin: 0 0 4px 0; font-size: 16px; }
+        .result-info .bio { color: #999; font-size: 13px; margin: 0 0 8px 0; }
+        .result-votes {
+            text-align: right;
+            min-width: 80px;
+        }
+        .result-votes .num {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a2e;
+        }
+        .result-votes .label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .result-photo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .result-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .total-bar {
+            text-align: center;
+            padding: 16px;
+            margin-bottom: 8px;
+        }
+        .total-bar .big {
+            font-size: 48px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .total-bar .sub {
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
 </head>
-
 <body>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-    h1 {
-        text-align: center;
-    }
-    .candidate {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px 0;
-    }
-</style>
-<h1>Election Results</h1>
-
-{% for c in candidates %}
-    <div class="candidate">
-        <h2>{{ c["name"] }}</h2>
-        <p>Votes: {{ c["votes"] }}</p>
+    <div class="header">
+        <h1>📊 Election Results</h1>
+        <div class="subtitle">Live vote tallies</div>
     </div>
-{% endfor %}
 
+    <div class="container">
+        <div class="total-bar">
+            <div class="big">{{ total_votes }}</div>
+            <div class="sub">total votes cast</div>
+        </div>
+
+        {% for c in candidates %}
+        <div class="result-card">
+            <div class="result-rank {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% else %}other{% endif %}">
+                #{{ loop.index }}
+            </div>
+
+            {% if c["photo"] %}
+            <img src="{{ url_for('uploaded_file', filename=c['photo']) }}" class="result-photo" alt="{{ c['name'] }}">
+            {% else %}
+            <div class="result-placeholder">{{ c["name"][0] }}</div>
+            {% endif %}
+
+            <div class="result-info">
+                <h3>{{ c["name"] }}</h3>
+                {% if c["bio"] %}
+                <p class="bio">{{ c["bio"] }}</p>
+                {% endif %}
+                <div class="vote-bar-container">
+                    <div class="vote-bar rank-{{ loop.index }}" style="width: {{ (c['votes'] / total_votes * 100) if total_votes > 0 else 0 }}%;"></div>
+                </div>
+            </div>
+
+            <div class="result-votes">
+                <div class="num">{{ c["votes"] }}</div>
+                <div class="label">votes</div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div style="text-align:center; margin-top:28px;">
+            <a href="/dashboard"><button class="btn btn-primary">← Back to Dashboard</button></a>
+        </div>
+    </div>
 </body>
 </html>

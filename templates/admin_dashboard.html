@@ -1,26 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Online Voting System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-
-<div class="header">
-    <h1>Admin Panel</h1>
-</div>
-
-<div class="container">
-
-    <div class="card">
-        <a href="/add_candidate"><button>Add Candidate</button></a>
-        <a href="/results"><button>View Results</button></a>
-        <a href="/dashboard"><button>Back</button></a>
-        <a href="/logout"><button>Logout</button></a>
+    <div class="header">
+        <h1>⚙ Admin Panel</h1>
+        <div class="subtitle">Manage candidates, photos, and elections</div>
+        <a href="/logout" style="position:absolute; top:20px; right:24px;">
+            <button class="btn btn-outline" style="color:white; border-color:rgba(255,255,255,0.3); font-size:13px;">Logout</button>
+        </a>
     </div>
 
-</div>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_voters }}</div>
+                <div class="stat-label">Registered Voters</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_voted }}</div>
+                <div class="stat-label">Votes Cast</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ turnout }}%</div>
+                <div class="stat-label">Voter Turnout</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ candidates|length }}</div>
+                <div class="stat-label">Candidates</div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+            <div class="action-bar">
+                <a href="/add_candidate"><button class="btn btn-primary">+ Add Candidate</button></a>
+                <a href="/results"><button class="btn btn-primary">📊 View Results</button></a>
+                <a href="/dashboard"><button class="btn btn-outline">← Back to Dashboard</button></a>
+                <form action="/reset_votes" method="POST" style="display:inline;" onsubmit="return confirm('Reset all votes? This cannot be undone.');">
+                    <button type="submit" class="btn btn-danger">↺ Reset All Votes</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Candidates -->
+        <h2 style="margin-top:28px; margin-bottom:4px;">Manage Candidates</h2>
+        <p style="color:#888; margin-top:0;">Upload photos, edit bios, or remove candidates</p>
+
+        <div class="candidates-grid">
+        {% for c in candidates %}
+            <div class="candidate-card">
+                {% if c["photo"] %}
+                <img src="{{ url_for('uploaded_file', filename=c['photo']) }}" alt="{{ c['name'] }}" class="candidate-photo">
+                {% else %}
+                <div class="candidate-photo placeholder-photo">{{ c["name"][0] }}</div>
+                {% endif %}
+                <h3>{{ c["name"] }}</h3>
+                {% if c["bio"] %}
+                <p class="candidate-bio">{{ c["bio"] }}</p>
+                {% endif %}
+                <div class="vote-count">{{ c["votes"] }}</div>
+                <div class="vote-label">votes</div>
+
+                <form action="/candidate/{{ c['id'] }}/photo" method="POST" enctype="multipart/form-data" style="margin:14px 0 6px 0;">
+                    <input type="file" name="photo" accept="image/*" required style="font-size:12px;">
+                    <button type="submit" class="btn btn-primary" style="margin-top:8px; font-size:12px; padding:8px 16px;">📷 Upload Photo</button>
+                </form>
+
+                <form action="/candidate/{{ c['id'] }}/delete" method="POST" onsubmit="return confirm('Remove {{ c['name'] }}? This cannot be undone.');">
+                    <button type="submit" class="btn btn-danger" style="font-size:12px; padding:8px 16px;">✕ Remove</button>
+                </form>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

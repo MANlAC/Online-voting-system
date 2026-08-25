@@ -1,0 +1,27 @@
+# Database
+voting_system.db
+
+# Uploads (user-uploaded files)
+uploads/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+
+# Tool internals
+.freebuff/
+.pytest_cache/

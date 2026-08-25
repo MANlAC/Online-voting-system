@@ -1,29 +1,47 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-<center>
-<form method="POST">
-    <input type="text" name="name" placeholder="Candidate Name">
-    <button type="submit">Add</button>
-</form>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add Candidate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Candidate — Online Voting System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+    <div class="header">
+        <h1>➕ Add Candidate</h1>
+        <div class="subtitle">Create a new candidate profile</div>
+    </div>
 
-<h2>Add Candidate</h2>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
-<form method="POST">
-    <input type="text" name="name" placeholder="Candidate Name" required>
-    <button type="submit">Add</button>
-</form>
-
-<br>
-<a href="/admin">Back to Admin Panel</a>
-
+        <div class="card auth-card">
+            <h2>New Candidate</h2>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Candidate Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio / Description</label>
+                    <textarea id="bio" name="bio" placeholder="Short bio or description (optional)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;">Add Candidate</button>
+            </form>
+            <div class="auth-footer">
+                <a href="/admin">← Back to Admin Panel</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-</center>

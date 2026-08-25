@@ -1,50 +1,47 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Voting System</title>
-    <link rel="stylesheet" href="static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
-    <div id="header">
-        <center>
-            <h1>Online Voting System</h1>
-        </center>
-
-
+    <div class="header">
+        <h1>🗳️ Online Voting System</h1>
+        <div class="subtitle">Secure • Transparent • Simple</div>
     </div>
-    <hr>
 
-    <div id="body">
-        <center>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="card auth-card">
+            <h2>Welcome Back</h2>
             <form action="/login" method="post">
-                <h2>Login</h2>
-                <input type="number" name="voterid" placeholder="Enter voter ID"><br><br>
-                <input type="password" name="password" placeholder="Enter your password"><br><br>
-                <select id="dropbox" name="role">
-                    <option value="Voter">Voter</option>
-                    <option value="Candidate">Candidate</option>
-                    <option value="Admin">Admin</option>
-                </select><br><br>
-
-
-                <button id="loginbutton">Login</button> <br><br>
-                New User? <a href="/register"> Register Here</a>
+                <div class="form-group">
+                    <label for="voterid">Voter ID</label>
+                    <input type="number" id="voterid" name="voterid" placeholder="Enter your voter ID" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;">Sign In</button>
             </form>
-        </center>
-    </div><br><br><br>
-    <hr>
-
-
-
-
-</body>
-<center>
-    Please do not share your personal information!!!<br>
-    Thankyou<br><br><br>
-
-    <div id="credit">
+            <div class="auth-footer">
+                New here? <a href="/register">Create an account</a>
+            </div>
         </div>
-</center>
+    </div>
 
+    <div class="footer">
+        Please do not share your credentials with anyone.
+    </div>
+</body>
 </html>
